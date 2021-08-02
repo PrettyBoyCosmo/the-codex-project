@@ -1,0 +1,102 @@
+{
+  "main": {
+    "id": "5848820c6da5b3fe",
+    "type": "split",
+    "children": [
+      {
+        "id": "94b1e1766202912c",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "roadmap/README.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7a5b9c1c14d1fda9",
+    "type": "split",
+    "children": [
+      {
+        "id": "23baef13dba0af40",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9c97c2d2f321dd3d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "20bc397f8cc9fa7b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f293d94c4a76b566",
+    "type": "split",
+    "children": [
+      {
+        "id": "96180116d9e431f2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ed144a6aadf36659",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "roadmap/README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "94b1e1766202912c",
+  "lastOpenFiles": [
+    "roadmap/README.md",
+    "roadmap/hexadecimal-system.md",
+    "roadmap/caesar-cipher.md",
+    "roadmap/vigenere-cipher.md",
+    "roadmap/binary-system.md",
+    "roadmap/reverse-cipher.md",
+    "roadmap/octal-system.md",
+    "roadmap/phonetic-alphabet.md",
+    "roadmap/multiplicative-cipher.md",
+    "templates/concept-page.md"
+  ]
+}
