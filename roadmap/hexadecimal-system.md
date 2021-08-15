@@ -15,7 +15,7 @@ a python shell script to convert numeric values into hexadecimal [vice versa]
 hex()
 
 # function for integer conversion
-
+int(hexadecimal, 16)
 ```
 ## Components:
 - convert
