@@ -37,7 +37,7 @@ help_menu = """
         -o <output file> = output file [output will be printed to screen by default]
 
         Example:
-        caesar-cipher.py -e -k 5 -t hello 
+        caesar-cipher.py -c -e -k 5 -t hello 
         """
 
 # symbols that can't be processed through the cipher
@@ -127,7 +127,7 @@ def bruteforce_caesar(plain_content, print_cnt, start_range=0, end_range=27):
             f.write(output)
 
 # parse all arguments
-def parser():
+def caesar_parser():
     opts, args = getopt.getopt(sys.argv[2:], 'k:f:t:o:r:', ['key', 'inputFile', 'inputText', 'outputFile', 'range'])
     arg_dict = {}
 
@@ -159,7 +159,7 @@ def cli(argument_check):
 
         # tries to get all arguments
         try:
-            arguments = parser()
+            arguments = caesar_parser()
 
         # catches arguments with no value
         except getopt.GetoptError:
