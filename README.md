@@ -1,4 +1,4 @@
-# The Codex Project
+# The Codex Project [INCOMPLETE]
 > Chris Taylor [Blue Cosmo] | 08/02/21 - 
 ---
 
