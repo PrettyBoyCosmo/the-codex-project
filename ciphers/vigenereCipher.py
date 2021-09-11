@@ -174,7 +174,7 @@ def vigenere_parser():
 def cli(argument_check):
 
     # display banner
-    print(f'{banner}\n\n')
+    print(banner)
 
     # one liners
     if argument_check == True:
@@ -225,6 +225,7 @@ def cli(argument_check):
 
 # main code
 def vigenere_main():
+
     # checks for arguments
     try:
         sys.argv[1]

@@ -15,6 +15,14 @@ import os
 
 # help menu
 help_menu = """
+_________            .___     ____  ___
+\\_   ___ \\  ____   __| _/____ \\   \\/  /
+/    \\  \\/ /  _ \\ / __ |/ __ \\ \\     / 
+\\     \\___(  <_> ) /_/ \\  ___/ /     \\ 
+ \\______  /\\____/\\____ |\\___  >___/\\  \\
+        \\/            \\/    \\/      \\_/
+
+
         The Codex Project oneliners
 
         First argument: Ciphers
@@ -53,6 +61,7 @@ help_menu = """
 
 # command line interface
 def cli(argument_check):
+
     # one liners
     if argument_check == True:
 
@@ -82,6 +91,7 @@ def cli(argument_check):
 
 # main code
 def codex_main():
+
     # checks for arguments
     try:
         sys.argv[1]

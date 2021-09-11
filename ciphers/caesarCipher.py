@@ -10,7 +10,6 @@
 # imports
 import sys
 import getopt
-import getpass
 
 # banner for cli
 banner = """
@@ -154,7 +153,7 @@ def caesar_parser():
 # command line interface
 def cli(argument_check):
     # display banner
-    print(f'{banner}\n\n')
+    print(banner)
 
     # one liners
     if argument_check == True:
