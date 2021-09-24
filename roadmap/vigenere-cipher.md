@@ -20,6 +20,8 @@ a python shell script to encrypt and decrypt vigenere
 	- advanced key decoding
 
 ## Roadmap:
+- implementing unkownkey
+- implement key wordlist [bruteforce]
 
 ## Extraneous:
 - aka polyalphabetic cipher
