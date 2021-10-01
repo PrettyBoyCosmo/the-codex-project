@@ -45,10 +45,11 @@ _________            .___     ____  ___
             Example:
             main.py -c -e -t hello -k 5
 
-        Vigener Cipher:
-            Second Argument:
+        Vigenere Cipher:
+            Second Argument: Ciphering Process
             -e = encrypt
-            -d = decrypt
+            -d = decrypt [known key]
+            -u = decrypt [unkown key]
 
             Additional Arguments:
             -k <string key> = key 
@@ -57,6 +58,7 @@ _________            .___     ____  ___
 
             Example:
             main.py -v -e -t hello -k world
+            main.py -v -u -i file.txt 
         """
 
 # command line interface

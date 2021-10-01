@@ -72,15 +72,15 @@ def encrypt_caesar(plain_content, encryption_key, print_cnt):
     else:
         with open(print_cnt, 'w') as f:
             f.write(output)
+        print('Output written to file sucessfully')
 
-    # NOTE: determine whether extra characters are going through
 
 # decrypts content
 def decrypt_caesar(plain_content, encryption_key, print_cnt):
     # output variable
     output = ''
  
-    # encryption process
+    # decryption process
     for character in plain_content:
         if character in symbols:
             output += character
@@ -97,6 +97,7 @@ def decrypt_caesar(plain_content, encryption_key, print_cnt):
     else:
         with open(print_cnt, 'w') as f:
             f.write(output)
+        print('Output written to file sucessfully')
 
 # bruteforces content
 def bruteforce_caesar(plain_content, print_cnt, start_range=0, end_range=27):
@@ -126,6 +127,7 @@ def bruteforce_caesar(plain_content, print_cnt, start_range=0, end_range=27):
     else:
         with open(print_cnt, 'w') as f:
             f.write(output)
+        print('Output written to file sucessfully')
 
 # parse all arguments
 def caesar_parser():

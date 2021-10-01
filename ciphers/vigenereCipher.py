@@ -1,13 +1,9 @@
 #!/usr/bin/python
 
 # vigenere cipher package for the the codex project
+# thanks to Andrew Paul for the ...
+# https://github.com/drewp41
 # created by : C0SM0
-
-# TODO: get key through cipher
-    # auto decrypt [-a], show key
-    # hard brute key length [pick range]
-# TODO: document code
-# TODO: clean up code
 
 # imports
 import sys
@@ -29,25 +25,36 @@ help_menu = """
 
             First Argument:
             -e = encrypt
-            -d = decrypt
+            -d = decrypt [known key]
+            -u = decrypt [unkown key]
 
             Additional Arguments:
             -k <string key> = key 
             -i <input file> = input file [.txt is best]
             -t <input text> = input text, one string only
+            -l <maximum key length> = maximum guess length for unkown key decryption
 
             Example:
-            main.py -v -e -t hello -k world           
+            main.py -v -e -t hello -k world
+            main.py -v -u -i file.txt 
             """
 
 # letters for encryption process
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+MAX_KEY_LENGTH = 20
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 # symbols that can't be processed through the cipher
 SYMBOLS = ['\n', '\t', ' ', '.', '?', '!', ',', '/', '\\', '<', '>', '|',
            '[', ']', '{', '}', '@', '#', '$', '%', '^', '&', '*', '(', ')',
            '-', '_', '=', '+', '`', '~', ':', ';', '"', "'", '0', '1', '2', '3',
            '4', '5', '6', '7', '8', '9']
+
+# Array containing the relative frequency of each letter in the English language
+english_frequences = [0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,
+					  0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,
+					  0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758,
+					  0.00978, 0.02360, 0.00150, 0.01974, 0.00074]
 
 # encrypt vigenere
 def encrypt_vigenere(plain_content, encryption_key, print_cnt):
@@ -98,6 +105,7 @@ def encrypt_vigenere(plain_content, encryption_key, print_cnt):
     else:
         with open(print_cnt, 'w') as f:
             f.write(''.join(output))
+        print('Output written to file sucessfully')
 
 # decryption process
 def decrypt_vigenere(plain_content, encryption_key, print_cnt):
@@ -148,10 +156,119 @@ def decrypt_vigenere(plain_content, encryption_key, print_cnt):
     else:
         with open(print_cnt, 'w') as f:
             f.write(''.join(output))
+        print('Output written to file sucessfully')
+
+# gets index through councidence
+def get_index_c(ciphertext):
+	
+	N = float(len(ciphertext))
+	frequency_sum = 0.0
+
+	# using Index of Coincidence formula
+	for letter in alphabet:
+		frequency_sum += ciphertext.count(letter) * (ciphertext.count(letter)-1)
+
+	# using Index of Coincidence formula
+	ic = frequency_sum/(N*(N-1))
+	return ic
+
+# returns key length with highest average
+def get_key_length(ciphertext):
+	ic_table=[]
+
+    # iterates through [possible] key sequences
+	for guess_len in range(MAX_KEY_LENGTH):
+		ic_sum = 0.0
+		avg_ic = 0.0
+		for i in range(guess_len):
+			sequence = ''
+			# breaks the ciphertext into sequences
+			for j in range(0, len(ciphertext[i:]), guess_len):
+				sequence += ciphertext[i+j]
+			ic_sum += get_index_c(sequence)
+
+		if not guess_len == 0:
+			avg_ic = ic_sum / guess_len
+		ic_table.append(avg_ic)
+
+	# returns the most likeyly key length
+	best_guess = ic_table.index(sorted(ic_table, reverse = True)[0])
+	second_best_guess = ic_table.index(sorted(ic_table, reverse = True)[1])
+
+	if best_guess % second_best_guess == 0:
+		return second_best_guess
+	else:
+		return best_guess
+
+# get the letter of the key that needs to be shifted
+def freq_analysis(sequence):
+	all_chi_squareds = [0] * 26
+
+	for i in range(26):
+		chi_squared_sum = 0.0
+
+		sequence_offset = [chr(((ord(sequence[j])-97-i)%26)+97) for j in range(len(sequence))]
+		v = [0] * 26
+
+		# count the numbers of each letter in the sequence_offset already in ascii
+		for l in sequence_offset:
+			v[ord(l) - ord('a')] += 1
+            
+		# divide the array by the length of the sequence to get the frequency percentages
+		for j in range(26):
+			v[j] *= (1.0/float(len(sequence)))
+
+		# compate frequencies
+		for j in range(26):
+			chi_squared_sum+=((v[j] - float(english_frequences[j]))**2)/float(english_frequences[j])
+
+		# append it all
+		all_chi_squareds[i] = chi_squared_sum
+
+	# return the letter of the key that it needs to be shifted by
+	shift = all_chi_squareds.index(min(all_chi_squareds))
+	return chr(shift+97)
+
+# gets key
+def get_key(ciphertext, key_length):
+	key = ''
+
+	# calculate letter frequency table for each letter of the key
+	for i in range(key_length):
+		sequence = ''
+
+		# breaks the ciphertext into sequences
+		for j in range(0,len(ciphertext[i:]), key_length):
+			sequence += ciphertext[i+j]
+
+		key += freq_analysis(sequence)
+
+	return key
+
+# decrypts viginere with unkown key
+def unkown_key(plain_content, print_cnt):
+    ciphertext = ''.join(x.lower() for x in plain_content if x.isalpha())	
+
+    # tries to get key
+    try:
+        # calculating the key data
+        key_length = get_key_length(ciphertext)
+        key = get_key(ciphertext, key_length)
+
+        # outputting key data
+        print(f'Key length is most likely {key_length}')
+        print(f'Key: {key}\n')
+
+        # decrypting vigenere
+        decrypt_vigenere(ciphertext, key, print_cnt)
+    
+    # if the plaintext was too small
+    except ZeroDivisionError:
+        print('The ciphertext you entered was to small for this algorithm\nPlease add more ciphertext')
 
 # parses arguments
 def vigenere_parser():
-    opts, args = getopt.getopt(sys.argv[2:], 'k:f:t:o:r:', ['key', 'inputFile', 'inputText', 'outputFile', 'range'])
+    opts, args = getopt.getopt(sys.argv[2:], 'k:i:t:o:r:', ['key', 'inputFile', 'inputText', 'outputFile', 'range'])
     arg_dict = {}
 
     # loop through arguments, assign them to dict [arg_dict]
@@ -214,6 +331,10 @@ def cli(argument_check):
                 # decrypts vigenere
                 if ciphering_process == '-d':
                     decrypt_vigenere(inputted_content, key, print_content)
+
+                # decrypts with unkown key
+                if  ciphering_process == '-u':
+                    unkown_key(inputted_content, print_content)
 
             # catches unspecified arguments
             except TypeError:
