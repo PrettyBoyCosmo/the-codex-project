@@ -38,7 +38,7 @@ help_menu = """
         -o <output file> = output file [output will be printed to screen by default]
 
         Example:
-        caesar-cipher.py -c -e -k 5 -t hello 
+        main.py -c -e -k 5 -t hello 
         """
 
 # symbols that can't be processed through the cipher
@@ -177,7 +177,13 @@ def cli(argument_check):
             
             # checks users output type
             if ('-i' in arguments):
-                inputted_content = open(arguments.get('-i'), 'r').read()
+                # tries to read file
+                try:
+                    inputted_content = open(arguments.get('-i'), 'r').read()
+
+                # file does not exist
+                except FileNotFoundError:
+                    print('[!!] The attached file does not exist')
 
             # checks if output was specified
             if ('-o' in arguments):

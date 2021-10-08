@@ -23,11 +23,12 @@ _________            .___     ____  ___
         \\/            \\/    \\/      \\_/
 
 
-        The Codex Project oneliners
+        The Codex Project Syntax
 
         First argument: Ciphers
-        -c = caesar
-        -v = vigenere
+        -c = caesar cipher
+        -v = vigenere cipher
+        -r = reverse cipher
 
         Caesar Cipher:
             Second Argument: Ciphering Process
@@ -59,6 +60,15 @@ _________            .___     ____  ___
             Example:
             main.py -v -e -t hello -k world
             main.py -v -u -i file.txt 
+
+        Reverse-Cipher Arguments:
+            Additional Arguments:
+            -t <plaintext>   = input file [.txt]
+            -i <input file>  = input text
+            -o <output file> = output file [output will be printed to screen by default]
+
+            Example:
+            main.py -t hello 
         """
 
 # command line interface
@@ -74,12 +84,19 @@ def cli(argument_check):
 
         # attempts to run caesar
         try:
+            # caesar cipher
             if ciphering_option == '-c':
                 os.system(f'python3 ./ciphers/caesarCipher.py {string_args}')
 
+            # vigenere cipher
             elif ciphering_option == '-v':
                 os.system(f'python3 ./ciphers/vigenereCipher.py {string_args}')
 
+            # reverse
+            elif ciphering_option == '-r':
+                os.system(f'python3 ./ciphers/reverseCipher.py {string_args}')
+
+            # exception
             else:
                 print('no ciphering option was added')
 

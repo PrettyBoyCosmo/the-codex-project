@@ -256,7 +256,7 @@ def unkown_key(plain_content, print_cnt):
         key = get_key(ciphertext, key_length)
 
         # outputting key data
-        print(f'Key length is most likely {key_length}')
+        print(f'Most Probable Key Length: {key_length}')
         print(f'Key: {key}\n')
 
         # decrypting vigenere
@@ -313,7 +313,13 @@ def cli(argument_check):
             
             # checks users output type
             if ('-i' in arguments):
-                inputted_content = open(arguments.get('-i'), 'r').read()
+                # tries to read file
+                try:
+                    inputted_content = open(arguments.get('-i'), 'r').read()
+
+                # file does not exist
+                except FileNotFoundError:
+                    print('[!!] The attached file does not exist')
 
             # checks if output was specified
             if ('-o' in arguments):
