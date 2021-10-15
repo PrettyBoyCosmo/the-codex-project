@@ -1,44 +1,38 @@
 #!/usr/bin/python
 
-# caesar cipher package for the the codex project
+# reverse cipher package for the the codex project
 # created by : C0SM0
-
-# TODO: add colors
-# TODO: cleanup code
-# TODO: fix menu
 
 # imports
 import sys
 import getopt
 
-# banner for cli
+# banner
 banner = """
-_________                                              _________ .__       .__                  
-\\_   ___ \\_____    ____   ___________ _______          \\_   ___ \\|__|_____ |  |__   ___________ 
-/    \\  \\/\\__  \\ _/ __ \\ /  ___/\\__  \\\\_  __ \\  ______ /    \\  \\/|  \\____ \\|  |  \\_/ __ \\_  __ \\
-\\     \\____/ __ \\\\  ___/ \\___ \\  / __ \\|  | \\/ /_____/ \\     \\___|  |  |_> >   Y  \\  ___/|  | \\/
- \\______  (____  /\\___  >____  >(____  /__|             \\______  /__|   __/|___|  /\\___  >__|   
-        \\/     \\/     \\/     \\/      \\/                        \\/   |__|        \\/     \\/       
+   _____        .__   __  .__          _________ .__       .__                  
+  /     \\  __ __|  |_/  |_|__|         \\_   ___ \\|__|_____ |  |__   ___________ 
+ /  \\ /  \\|  |  \\  |\\   __\\  |  ______ /    \\  \\/|  \\____ \\|  |  \\_/ __ \\_  __ \\
+/    Y    \\  |  /  |_|  | |  | /_____/ \\     \\___|  |  |_> >   Y  \\  ___/|  | \\/
+\\____|__  /____/|____/__| |__|          \\______  /__|   __/|___|  /\\___  >__|   
+        \\/                                     \\/   |__|        \\/     \\/      
 """
 
-# help menu for displaying argument options
+# help menu for ciphering options
 help_menu = """
-        Caesar-Cipher Arguments:
+        Multiplicative-Cipher Arguments:
 
         First Argument: Ciphering Process
         -e = encrypt
         -d = decrypt
-        -b = bruteforce [bruteforces using all possible keys by default]
 
         Additional Arguments:
-        -k <integer key> = key [not required for bruteforcing '-b']
-        -r <start,end>   = choose a range of keys to start and end the bruteforce
-        -t <plaintext>   = input text
+        -k <integer key> = key 
+        -t <plaintext>   = input text 
         -i <input file>  = input file [.txt]
         -o <output file> = output file [output will be printed to screen by default]
 
         Example:
-        main.py -c -e -k 5 -t hello 
+        main.py -m -e -k 7 -t hello 
         """
 
 # symbols that can't be processed through the cipher
@@ -47,22 +41,76 @@ symbols = ['\n', '\t', ' ', '.', '?', '!', ',', '/', '\\', '<', '>', '|',
            '-', '_', '=', '+', '`', '~', ':', ';', '"', "'", '0', '1', '2', '3',
            '4', '5', '6', '7', '8', '9']
 
-# generate path
-# path = f"{getpass.getuser()}@caesar-cipher $ "
+index_dict = {
+    'a':0,
+    'b':1,
+    'c':2,
+    'd':3,
+    'e':4,
+    'f':5,
+    'g':6,
+    'h':7,
+    'i':8,
+    'j':9,
+    'k':10,
+    'l':11,
+    'm':12,
+    'n':13,
+    'o':14,
+    'p':15,
+    'q':16,
+    'r':17,
+    's':18,
+    't':19,
+    'u':20,
+    'v':21,
+    'w':22,
+    'x':23,
+    'y':24,
+    'z':25,
+}
 
-# encrypts content
-def encrypt_caesar(plain_content, encryption_key, print_cnt):
+# gets index from letter
+def get_index(letter):
+    for l, i in index_dict.items():
+        if letter == l:
+            return i
+
+# gets letter from index
+def get_letter(index):
+    for l, i in index_dict.items():
+        if index == i:
+            return l
+
+# gets inverse for decryption
+def inverse(a):
+    for x in range(1, 26):
+        if (((a%26) * (x%26)) % 26 == 1):
+            return x
+    return -1
+
+# encrypts multiplicative cipher
+def encrypt_multiplicative(plain_content, encryption_key, print_cnt):
     # output variable
     output = ''
- 
+
     # encryption process
     for character in plain_content:
+
         if character in symbols:
             output += character
+
         elif character.isupper():
-            output += chr((ord(character) + int(encryption_key) - 65) % 26 + 65)
+            index = get_index(character.lower())
+            new_index = (index * encryption_key) % 26
+            cipher_character = get_letter(new_index)
+            output += cipher_character.upper()
+
         else:
-            output += chr((ord(character) + int(encryption_key) - 97) % 26 + 97)
+            index = get_index(character)
+            new_index = (index * encryption_key) % 26
+            cipher_character = get_letter(int(new_index))
+            output += cipher_character
 
     # output content to cli
     if print_cnt == True:
@@ -75,62 +123,42 @@ def encrypt_caesar(plain_content, encryption_key, print_cnt):
         print('Output written to file sucessfully')
 
 
-# decrypts content
-def decrypt_caesar(plain_content, encryption_key, print_cnt):
+# decrypts multiplicative cipher
+def decrypt_multiplicative(plain_content, decryption_key, print_cnt):
     # output variable
     output = ''
+    inverse_key = inverse(decryption_key)
  
     # decryption process
     for character in plain_content:
+
         if character in symbols:
             output += character
-        elif character.isupper():
-            output += chr((ord(character) - int(encryption_key) - 65) % 26 + 65)
-        else:
-            output += chr((ord(character) - int(encryption_key) - 97) % 26 + 97)
 
-    # outputs content to cli
+        elif character.isupper():
+            index = get_index(character.lower())
+            new_index = (index * inverse_key) % 26
+            cipher_character = get_letter(new_index)
+            output += cipher_character.upper()
+
+        else:
+            index = get_index(character)
+            new_index = (index * inverse_key) % 26
+            cipher_character = get_letter(new_index)
+            output += cipher_character
+
+    # output content to cli
     if print_cnt == True:
         print(f'Decrypted Content:\n{output}\n')
 
-    # outputs content to file
+    # output content to file
     else:
         with open(print_cnt, 'w') as f:
             f.write(output)
         print('Output written to file sucessfully')
 
-# bruteforces content
-def bruteforce_caesar(plain_content, print_cnt, start_range=0, end_range=27):
-    # output variable
-    output = ''
-
-    shift_key = start_range
-    for shift in range(start_range, end_range):
-        output += f'Shift Key: {shift_key}\n'
-        shift_key += 1
-
-        for character in plain_content:
-            if character in symbols:
-                output += character
-            elif character.isupper():
-                output += chr((ord(character) - shift - 65) % 26 + 65)
-            else:
-                output += chr((ord(character) - shift - 97) % 26 + 97)
-
-        output += '\n\n'
-
-    # outputs content to cli
-    if print_cnt == True:
-        print(f'Bruteforced Content:\n{output}\n')
-
-    # outputs content to file
-    else:
-        with open(print_cnt, 'w') as f:
-            f.write(output)
-        print('Output written to file sucessfully')
-
-# parse all arguments
-def caesar_parser():
+# parses arguments for ciphering process
+def multiplicative_parser():
     opts, args = getopt.getopt(sys.argv[2:], 'k:i:t:o:r:', ['key', 'inputFile', 'inputText', 'outputFile', 'range'])
     arg_dict = {}
 
@@ -162,7 +190,7 @@ def cli(argument_check):
 
         # tries to get all arguments
         try:
-            arguments = caesar_parser()
+            arguments = multiplicative_parser()
 
         # catches arguments with no value
         except getopt.GetoptError:
@@ -200,11 +228,11 @@ def cli(argument_check):
             try:
                 # encrypts caesar
                 if ciphering_process == '-e':
-                    encrypt_caesar(inputted_content, key, print_content)
+                    encrypt_multiplicative(inputted_content, key, print_content)
 
                 # decrypts caesar
                 if ciphering_process == '-d':
-                    decrypt_caesar(inputted_content, key, print_content)
+                    decrypt_multiplicative(inputted_content, key, print_content)
 
                 # bruteforce caesar
                 if ciphering_process == '-b':
@@ -223,7 +251,7 @@ def cli(argument_check):
         print(help_menu)
 
 # main code
-def caesar_main():
+def multiplicative_main():
 
     # checks for arguments
     try:
@@ -237,4 +265,5 @@ def caesar_main():
 
 # runs main function if file is not being imported
 if __name__ == '__main__':
-    caesar_main()
+    multiplicative_main()
+

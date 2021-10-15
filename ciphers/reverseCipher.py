@@ -112,7 +112,7 @@ def cli(argument_check):
         print(help_menu)
 
 # main code
-def caesar_main():
+def reverse_main():
 
     # checks for arguments
     try:
@@ -126,4 +126,4 @@ def caesar_main():
 
 # runs main function if file is not being imported
 if __name__ == '__main__':
-    caesar_main()
+    reverse_main()

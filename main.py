@@ -27,8 +27,9 @@ _________            .___     ____  ___
 
         First argument: Ciphers
         -c = caesar cipher
-        -v = vigenere cipher
+        -m = multiplicative cipher
         -r = reverse cipher
+        -v = vigenere cipher
 
         Caesar Cipher:
             Second Argument: Ciphering Process
@@ -46,6 +47,30 @@ _________            .___     ____  ___
             Example:
             main.py -c -e -t hello -k 5
 
+        Multiplicative-Cipher Arguments:
+
+            Second Argument: Ciphering Process
+            -e = encrypt
+            -d = decrypt
+
+            Additional Arguments:
+            -k <integer key> = key 
+            -t <plaintext>   = input text 
+            -i <input file>  = input file [.txt]
+            -o <output file> = output file [output will be printed to screen by default]
+
+            Example:
+            main.py -m -e -k 7 -t hello 
+
+        Reverse-Cipher Arguments:
+            Additional Arguments:
+            -t <plaintext>   = input file [.txt]
+            -i <input file>  = input text
+            -o <output file> = output file [output will be printed to screen by default]
+
+            Example:
+            main.py -t hello 
+            
         Vigenere Cipher:
             Second Argument: Ciphering Process
             -e = encrypt
@@ -60,15 +85,6 @@ _________            .___     ____  ___
             Example:
             main.py -v -e -t hello -k world
             main.py -v -u -i file.txt 
-
-        Reverse-Cipher Arguments:
-            Additional Arguments:
-            -t <plaintext>   = input file [.txt]
-            -i <input file>  = input text
-            -o <output file> = output file [output will be printed to screen by default]
-
-            Example:
-            main.py -t hello 
         """
 
 # command line interface
@@ -92,9 +108,13 @@ def cli(argument_check):
             elif ciphering_option == '-v':
                 os.system(f'python3 ./ciphers/vigenereCipher.py {string_args}')
 
-            # reverse
+            # reverse cipher
             elif ciphering_option == '-r':
                 os.system(f'python3 ./ciphers/reverseCipher.py {string_args}')
+
+            # multiplicative cipher
+            elif ciphering_option == '-m':
+                os.system(f'python3 ./ciphers/multiplicativeCipher.py {string_args}')
 
             # exception
             else:
